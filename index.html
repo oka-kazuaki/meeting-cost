@@ -103,14 +103,14 @@
     <div class="field">
       <label for="rate">1時間あたりの単価（1人）</label>
       <div class="input-row">
-        <input id="rate" type="number" min="0" step="100" value="3000" inputmode="numeric">
-        <span class="unit">円</span>
+        <input id="rate" type="number" min="0" step="1" value="25" inputmode="decimal">
+        <span class="unit">ドル</span>
       </div>
     </div>
 
     <div class="result" aria-live="polite">
       <div class="label">合計コスト</div>
-      <div class="total" id="total">¥0</div>
+      <div class="total" id="total">$0</div>
       <div class="detail" id="detail"></div>
     </div>
   </main>
@@ -121,7 +121,7 @@
     const rate = document.getElementById('rate');
     const total = document.getElementById('total');
     const detail = document.getElementById('detail');
-    const yen = new Intl.NumberFormat('ja-JP', { style: 'currency', currency: 'JPY', maximumFractionDigits: 0 });
+    const usd = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 
     function value(input) {
       const n = parseFloat(input.value);
@@ -130,8 +130,8 @@
 
     function update() {
       const p = value(people), h = value(hours), r = value(rate);
-      total.textContent = yen.format(Math.round(p * h * r));
-      detail.textContent = `${p}人 × ${h}時間 × ${yen.format(r)}`;
+      total.textContent = usd.format(Math.round(p * h * r * 100) / 100);
+      detail.textContent = `${p}人 × ${h}時間 × ${usd.format(r)}`;
     }
 
     [people, hours, rate].forEach(el => el.addEventListener('input', update));
